@@ -42,6 +42,10 @@ TARGET_CPU_ABI := armeabi-v6j
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv6j
 
+# dx: fuckin optimization
+BOARD_NO_RGBX_8888 := true
+TARGET_USES_16BPPSURFACE_FOR_OPAQUE := true
+
 # Wifi related defines
 BOARD_WPA_SUPPLICANT_DRIVER := CUSTOM
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := libWifiApi

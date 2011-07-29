@@ -102,5 +102,11 @@ PRODUCT_COPY_FILES += \
     device/htc/hero/modules/fuse.ko:system/lib/modules/$(KERNEL_NAME)/fs/fuse/fuse.ko \
     device/htc/hero/modules/wlan.ko:system/lib/modules/wlan.ko
 
+## Camera proprietaries
+PRODUCT_COPY_FILES += \
+    vendor/cyanogen/x8/proprietary/lib/liboemcamera.so:system/lib/liboemcamera.so \
+    vendor/cyanogen/x8/proprietary/lib/libmmjpeg.so:system/lib/libmmjpeg.so \
+    vendor/cyanogen/x8/proprietary/lib/libmmipl.so:system/lib/libmmipl.so
+
 # stuff common to all HTC phones
 $(call inherit-product, device/htc/common/common.mk)

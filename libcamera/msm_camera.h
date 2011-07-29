@@ -420,23 +420,13 @@ struct msm_snapshot_pp_status {
 #define CAMERA_EFFECT_MONO		1
 #define CAMERA_EFFECT_NEGATIVE		2
 #define CAMERA_EFFECT_SOLARIZE		3
-#define CAMERA_EFFECT_SEPIA		7
-#define CAMERA_EFFECT_POSTERIZE		8
-#define CAMERA_EFFECT_WHITEBOARD	9
-#define CAMERA_EFFECT_BLACKBOARD	10
-#define CAMERA_EFFECT_AQUA		11
-/*
-#define CAMERA_EFFECT_OFF		0
-#define CAMERA_EFFECT_MONO		1
-#define CAMERA_EFFECT_NEGATIVE		2
-#define CAMERA_EFFECT_SOLARIZE		3
 #define CAMERA_EFFECT_SEPIA		4
 #define CAMERA_EFFECT_POSTERIZE		5
 #define CAMERA_EFFECT_WHITEBOARD	6
 #define CAMERA_EFFECT_BLACKBOARD	7
 #define CAMERA_EFFECT_AQUA		8
-// FIH, Charles Huang, 2009/07/30 { 
-// [FXX_CR], add new effect to meet requirement 
+/* FIH, Charles Huang, 2009/07/30 { */
+/* [FXX_CR], add new effect to meet requirement */
 #ifdef CONFIG_FIH_FXX
 #define CAMERA_EFFECT_BLUISH		9
 #define CAMERA_EFFECT_REDDISH		10
@@ -445,8 +435,7 @@ struct msm_snapshot_pp_status {
 #else
 #define CAMERA_EFFECT_MAX		9
 #endif
-// } FIH, Charles Huang, 2009/07/30 
-*/
+/* } FIH, Charles Huang, 2009/07/30 */
 
 /* FIH, Charles Huang, 2009/10/28 { */
 /* [FXX_CR], add new param to meet requirement */

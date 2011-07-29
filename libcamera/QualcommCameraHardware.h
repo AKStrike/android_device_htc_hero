@@ -24,8 +24,6 @@
 ** Please do not change the EXIF header without asking me first.
 */
 
-// heavily modified to work on HTC Hero GSM by louis@steelbytes.com 21/Jan/2011
-
 #ifndef ANDROID_HARDWARE_QUALCOMM_CAMERA_HARDWARE_H
 #define ANDROID_HARDWARE_QUALCOMM_CAMERA_HARDWARE_H
 
@@ -71,23 +69,21 @@ struct board_property{
 #define FALSE 0
 
 #define CAMERA_MIN_CONTRAST 0
-#define CAMERA_MAX_CONTRAST 10
-#define CAMERA_DEF_CONTRAST 5
-
+#define CAMERA_MAX_CONTRAST 4
 #define CAMERA_MIN_SHARPNESS 0
-#define CAMERA_MAX_SHARPNESS 30
-#define CAMERA_DEF_SHARPNESS 10
-
-#define CAMERA_MIN_SATURATION 1
-#define CAMERA_MAX_SATURATION 10
-#define CAMERA_DEF_SATURATION 5
-
 #define CAMERA_MIN_EXPOSURE_COMPENSATION 0
+#define CAMERA_MAX_SHARPNESS 4
+#define CAMERA_MIN_SATURATION 0
+#define CAMERA_MAX_SATURATION 4
 #define CAMERA_MAX_EXPOSURE_COMPENSATION 8
+#define CAMERA_DEF_SHARPNESS 2
+#define CAMERA_DEF_CONTRAST 3
+#define CAMERA_DEF_SATURATION 2
 #define CAMERA_DEF_EXPOSURE_COMPENSATION "2.0"
 #define CAMERA_EXPOSURE_COMPENSATION_STEP 2
 
 #define CEILING16(x) (x&0xfffffff0)
+#define PAD_TO_WORD(x) ((x&1) ? x+1 : x)
 
 #define JPEG_EVENT_DONE 0
 #define CAM_CTRL_SUCCESS 1
@@ -109,7 +105,7 @@ typedef struct {
 } common_crop_t;
 
 typedef uint8_t cam_ctrl_type;
-/*
+
 typedef struct {
 	unsigned short video_width;
 	unsigned short video_height;
@@ -127,24 +123,6 @@ typedef struct {
 	unsigned short raw_picture_width;
 	unsigned short filler7;
 	unsigned short filler8;
-} cam_ctrl_dimension_t;
-*/
-typedef struct
-{
-    unsigned short picture_width;
-    unsigned short picture_height;
-    unsigned short display_width;
-    unsigned short display_height;
-    unsigned short orig_picture_dx;
-    unsigned short orig_picture_dy;
-    unsigned short ui_thumbnail_height;
-    unsigned short ui_thumbnail_width;
-    unsigned short thumbnail_height;
-    unsigned short thumbnail_width;
-    unsigned short filler5;
-    unsigned short filler6;
-    unsigned short filler7;
-    unsigned short filler8;
 } cam_ctrl_dimension_t;
 
 typedef struct {
@@ -249,44 +227,43 @@ struct fifo_node *dequeue(struct fifo_queue *queue) {
 }
 
 
-/*
 enum camera_ops {
-    CAMERA_SET_PARM_ENCODE_ROTATION, // 0
-    CAMERA_SET_PARM_DIMENSION, //1 
-    CAMERA_SET_PARM_ZOOM, // 2
-    CAMERA_SET_PARM_SENSOR_POSITION, // 3
-    CAMERA_SET_PARM_SHARPNESS, // 4
-    CAMERA_SET_PARM_LUMA_ADAPTATION, // 5
-    CAMERA_SET_PARM_CONTRAST, // 6
-    CAMERA_SET_PARM_EXPOSURE_COMPENSATION, // 7
-    CAMERA_SET_PARM_BRIGHTNESS, // 8
-    CAMERA_SET_PARM_FOCUS_RECT, // 9
-    CAMERA_SET_PARM_HUE, // 10
-    CAMERA_SET_PARM_SATURATION, // 11
-    CAMERA_SET_PARM_EXPOSURE, // 12
-    CAMERA_SET_PARM_AUTO_FOCUS, // 13
-    CAMERA_SET_PARM_WB, // 14
-    CAMERA_SET_PARM_EFFECT, // 15
-    CAMERA_SET_PARM_FPS, // 16
-    CAMERA_SET_PARM_FLASH, // 17
-    CAMERA_SET_PARM_NIGHTSHOT_MODE, // 18
-    CAMERA_SET_PARM_REFLECT, // 19
-    CAMERA_SET_PARM_PREVIEW_MODE, // 20
-    CAMERA_SET_PARM_ANTIBANDING, // 21
-    CAMERA_SET_PARM_RED_EYE_REDUCTION, // 22
-    CAMERA_SET_PARM_FOCUS_STEP, // 23
-    CAMERA_SET_PARM_EXPOSURE_METERING, // 24
-    CAMERA_SET_PARM_AUTO_EXPOSURE_MODE, // 25
-    CAMERA_SET_PARM_ISO, // 26
-    CAMERA_SET_PARM_BESTSHOT_MODE, // 27
-    CAMERA_SET_PARM_PREVIEW_FPS, // 28
-    CAMERA_SET_PARM_AF_MODE, // 29
-    CAMERA_SET_PARM_HISTOGRAM, // 30
-    CAMERA_SET_PARM_FLASH_STATE, // 31
-    CAMERA_SET_PARM_FRAME_TIMESTAMP, // 32
-    CAMERA_SET_PARM_STROBE_FLASH, // 33
-    CAMERA_SET_PARM_FPS_LIST, // 34
-    CAMERA_SET_PARM_HJR, // 35
+    CAMERA_SET_PARM_ENCODE_ROTATION,
+    CAMERA_SET_PARM_DIMENSION,
+    CAMERA_SET_PARM_ZOOM,
+    CAMERA_SET_PARM_SENSOR_POSITION,
+    CAMERA_SET_PARM_SHARPNESS,
+    CAMERA_SET_PARM_LUMA_ADAPTATION,
+    CAMERA_SET_PARM_CONTRAST,
+    CAMERA_SET_PARM_EXPOSURE_COMPENSATION,
+    CAMERA_SET_PARM_BRIGHTNESS,
+    CAMERA_SET_PARM_FOCUS_RECT,
+    CAMERA_SET_PARM_HUE,
+    CAMERA_SET_PARM_SATURATION,
+    CAMERA_SET_PARM_EXPOSURE,
+    CAMERA_SET_PARM_AUTO_FOCUS,
+    CAMERA_SET_PARM_WB,
+    CAMERA_SET_PARM_EFFECT,
+    CAMERA_SET_PARM_FPS,
+    CAMERA_SET_PARM_FLASH,
+    CAMERA_SET_PARM_NIGHTSHOT_MODE,
+    CAMERA_SET_PARM_REFLECT,
+    CAMERA_SET_PARM_PREVIEW_MODE,
+    CAMERA_SET_PARM_ANTIBANDING,
+    CAMERA_SET_PARM_RED_EYE_REDUCTION,
+    CAMERA_SET_PARM_FOCUS_STEP,
+    CAMERA_SET_PARM_EXPOSURE_METERING,
+    CAMERA_SET_PARM_AUTO_EXPOSURE_MODE,
+    CAMERA_SET_PARM_ISO,
+    CAMERA_SET_PARM_BESTSHOT_MODE,
+    CAMERA_SET_PARM_PREVIEW_FPS,
+    CAMERA_SET_PARM_AF_MODE,
+    CAMERA_SET_PARM_HISTOGRAM,
+    CAMERA_SET_PARM_FLASH_STATE,
+    CAMERA_SET_PARM_FRAME_TIMESTAMP,
+    CAMERA_SET_PARM_STROBE_FLASH,
+    CAMERA_SET_PARM_FPS_LIST,
+    CAMERA_SET_PARM_HJR,
     CAMERA_SET_PARM_ROLLOFF=37,
     CAMERA_STOP_PREVIEW=38,
     CAMERA_START_PREVIEW,
@@ -309,62 +286,6 @@ enum camera_ops {
     CAMERA_SET_FPS_MODE,
     CAMERA_SET_PARM_SCENE_MODE,
 };
-*/
-#define CAMERA_SET_PARM_DISPLAY_INFO 0
-#define CAMERA_SET_PARM_DIMENSION 1
-#define CAMERA_SET_PARM_ZOOM 2
-#define CAMERA_SET_PARM_SENSOR_POSITION 3
-#define CAMERA_SET_PARM_FOCUS_RECT 4
-#define CAMERA_SET_PARM_LUMA_ADAPTATION 5
-#define CAMERA_SET_PARM_CONTRAST 6
-#define CAMERA_SET_PARM_BRIGHTNESS 7
-#define CAMERA_SET_PARM_EXPOSURE_COMPENSATION 8
-#define CAMERA_SET_PARM_SHARPNESS 9
-#define CAMERA_SET_PARM_HUE 10
-#define CAMERA_SET_PARM_SATURATION 11
-#define CAMERA_SET_PARM_EXPOSURE 12
-#define CAMERA_SET_PARM_AUTO_FOCUS 13
-#define CAMERA_SET_PARM_WB 14
-#define CAMERA_SET_PARM_EFFECT 15
-#define CAMERA_SET_PARM_FPS 16
-#define CAMERA_SET_PARM_FLASH 17
-#define CAMERA_SET_PARM_NIGHTSHOT_MODE 18
-#define CAMERA_SET_PARM_REFLECT 19
-#define CAMERA_SET_PARM_PREVIEW_MODE 20
-#define CAMERA_SET_PARM_ANTIBANDING 21
-#define CAMERA_SET_PARM_RED_EYE_REDUCTION 22
-#define CAMERA_SET_PARM_FOCUS_STEP 23
-#define CAMERA_SET_PARM_EXPOSURE_METERING 24
-#define CAMERA_SET_PARM_AUTO_EXPOSURE_MODE 25
-#define CAMERA_SET_PARM_ISO 26
-#define CAMERA_SET_PARM_BESTSHOT_MODE 27
-
-#define CAMERA_SET_PARM_PREVIEW_FPS 29
-#define CAMERA_SET_PARM_AF_MODE 30
-#define CAMERA_SET_PARM_HISTOGRAM 31
-#define CAMERA_SET_PARM_FLASH_STATE 32
-#define CAMERA_SET_PARM_FRAME_TIMESTAMP 33
-#define CAMERA_SET_PARM_STROBE_FLASH 34
-#define CAMERA_SET_PARM_FPS_LIST 35
-#define CAMERA_SET_PARM_HJR 36
-#define CAMERA_SET_PARM_ROLLOFF 37
-#define CAMERA_STOP_PREVIEW 38
-#define CAMERA_START_PREVIEW 39
-#define CAMERA_START_SNAPSHOT 40
-#define CAMERA_STOP_SNAPSHOT 42
-#define CAMERA_EXIT 43
-#define CAMERA_GET_PARM_MAXZOOM 47
-#define CAMERA_GET_PARM_AF_SHARPNESS 48
-#define CAMERA_SET_PARM_LED_MODE 49
-#define CAMERA_CAMERA_SET_MOTION_ISO 50
-#define CAMERA_AUTO_FOCUS_CANCEL 51
-#define CAMERA_GET_PARM_FOCUS_STEP 52
-#define CAMERA_ENABLE_AFD 53
-#define CAMERA_PREPARE_SNAPSHOT 54
-#define CAMERA_SET_PARM_COORDINATE 55
-#define CAMERA_SET_AWB_CALIBRATION 56
-#define CAMERA_SET_PARM_LA_MODE 57
-#define CAMERA_SET_PARM_AE_COORDINATE 58
 
 typedef enum {
 	CAMERA_RSP_CB_SUCCESS,
@@ -494,7 +415,7 @@ private:
     bool native_set_dimension (int camfd);
     bool native_jpeg_encode (void);
     bool native_set_parm(cam_ctrl_type type, uint16_t length, void *value);
-    //bool native_zoom_image(int fd, int srcOffset, int dstOffset, common_crop_t *crop);
+    bool native_zoom_image(int fd, int srcOffset, int dstOffset, common_crop_t *crop);
 
     static wp<QualcommCameraHardware> singleton;
 
@@ -563,24 +484,23 @@ private:
     };
 
     sp<PmemPool> mPreviewHeap;
-    //sp<PmemPool> mRecordHeap;
+    sp<PmemPool> mRecordHeap;
     sp<PmemPool> mThumbnailHeap;
     sp<PmemPool> mRawHeap;
-    //sp<PmemPool> mDisplayHeap;
+    sp<PmemPool> mDisplayHeap;
     sp<AshmemPool> mJpegHeap;
-    //sp<PmemPool> mRawSnapShotPmemHeap;
-    //sp<AshmemPool> mRawSnapshotAshmemHeap;
-    //sp<PmemPool> mPostViewHeap;
+    sp<PmemPool> mRawSnapShotPmemHeap;
+    sp<PmemPool> mPostViewHeap;
 
 
     bool startCamera();
     bool initPreview();
-    //bool initRecord();
+    bool initRecord();
     void deinitPreview();
     bool initRaw(bool initJpegHeap);
-    //bool initRawSnapshot();
+    bool initRawSnapshot();
     void deinitRaw();
-    //void deinitRawSnapshot();
+    void deinitRawSnapshot();
 
     bool mFrameThreadRunning;
     Mutex mFrameThreadWaitLock;
@@ -588,15 +508,14 @@ private:
     friend void *frame_thread(void *user);
     void runFrameThread(void *data);
 
-	/*
     //720p recording video thread
     bool mVideoThreadExit;
     bool mVideoThreadRunning;
     Mutex mVideoThreadWaitLock;
     Condition mVideoThreadWait;
     friend void *video_thread(void *user);
-    //void runVideoThread(void *data);
-	*/
+    void runVideoThread(void *data);
+
 
     bool mShutterPending;
     Mutex mShutterLock;
@@ -607,18 +526,18 @@ private:
     friend void *snapshot_thread(void *user);
     void runSnapshotThread(void *data);
     Mutex mRawPictureHeapLock;
-    //bool mJpegThreadRunning;
-    //Mutex mJpegThreadWaitLock;
-    //Condition mJpegThreadWait;
+    bool mJpegThreadRunning;
+    Mutex mJpegThreadWaitLock;
+    Condition mJpegThreadWait;
     bool mInSnapshotMode;
     Mutex mInSnapshotModeWaitLock;
     Condition mInSnapshotModeWait;
 
-    //void debugShowPreviewFPS() const;
-    //void debugShowVideoFPS() const;
+    void debugShowPreviewFPS() const;
+    void debugShowVideoFPS() const;
 
     int mSnapshotFormat;
-    //void filterPictureSizes();
+    void filterPictureSizes();
     void filterPreviewSizes();
     void storeTargetType();
 
@@ -657,7 +576,7 @@ private:
     bool mReleasedRecordingFrame;
 
     void receiveRawPicture(void);
-    //void receiveRawSnapshot(void);
+    void receiveRawSnapshot(void);
 
     Mutex mCallbackLock;
     Mutex mOverlayLock;
@@ -697,10 +616,10 @@ private:
 
     bool mInitialized;
 
-    //int mBrightness;
+    int mBrightness;
     int mHJR;
     struct msm_frame frames[kPreviewBufferCount];
-    //struct msm_frame *recordframes;
+    struct msm_frame *recordframes;
     bool mInPreviewCallback;
     bool mUseOverlay;
     sp<Overlay>  mOverlay;
@@ -711,7 +630,7 @@ private:
     data_callback_timestamp mDataCallbackTimestamp;
     void *mCallbackCookie;  // same for all callbacks
     int mDebugFps;
-    //int kPreviewBufferCountActual;
+    int kPreviewBufferCountActual;
     int previewWidth, previewHeight;
 };
 
