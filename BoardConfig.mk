@@ -43,9 +43,9 @@ TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv6j
 
 # dx: fuckin optimization
-BOARD_NO_RGBX_8888 := true
 TARGET_USES_16BPPSURFACE_FOR_OPAQUE := true
 BOARD_USE_FROYO_LIBCAMERA := true
+WITH_JIT := true
 
 
 # Wifi related defines
