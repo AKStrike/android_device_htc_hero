@@ -101,7 +101,7 @@ BUILD_LIBCAMERA := true
 BOARD_CAMERA_LIBRARIES := libcameraservice libcamera
 USE_CAMERA_STUB:= false
 
-BOARD_USES_GPSSHIM := true
+#BOARD_USES_GPSSHIM := true
 
 BOARD_GPS_NEEDS_XTRA := true
 
