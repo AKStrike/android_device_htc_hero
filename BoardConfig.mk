@@ -42,6 +42,12 @@ TARGET_CPU_ABI := armeabi-v6j
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv6j
 
+# dx: fuckin optimization
+TARGET_USES_16BPPSURFACE_FOR_OPAQUE := true
+BOARD_USE_FROYO_LIBCAMERA := true
+WITH_JIT := true
+
+
 # Wifi related defines
 BOARD_WPA_SUPPLICANT_DRIVER := CUSTOM
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := libWifiApi
@@ -95,7 +101,7 @@ BUILD_LIBCAMERA := true
 BOARD_CAMERA_LIBRARIES := libcameraservice libcamera
 USE_CAMERA_STUB:= false
 
-BOARD_USES_GPSSHIM := true
+#BOARD_USES_GPSSHIM := true
 
 BOARD_GPS_NEEDS_XTRA := true
 
