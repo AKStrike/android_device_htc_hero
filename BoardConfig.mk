@@ -38,15 +38,18 @@ TARGET_OTA_ASSERT_DEVICE := hero
 PRODUCT_BUILD_PROP_OVERRIDES += TARGET_BOOTLOADER_BOARD_NAME=hero
 
 # ARMv6-compatible processor rev 5 (v6l)
-TARGET_CPU_ABI := armeabi-v6j
+# bjay: The X8 has a armv6-vfp
+#TARGET_CPU_ABI := armeabi-v6j
+TARGET_CPU_ABI := armeabi-v6vfp
 TARGET_CPU_ABI2 := armeabi
-TARGET_ARCH_VARIANT := armv6j
+# bjay: The X8 has a armv6-vfp
+#TARGET_ARCH_VARIANT := armv6j
+TARGET_ARCH_VARIANT := armv6-vfp
 
 # dx: fuckin optimization
 TARGET_USES_16BPPSURFACE_FOR_OPAQUE := true
 BOARD_USE_FROYO_LIBCAMERA := true
 WITH_JIT := true
-
 
 # Wifi related defines
 BOARD_WPA_SUPPLICANT_DRIVER := CUSTOM
