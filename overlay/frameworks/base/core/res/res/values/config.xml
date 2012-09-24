@@ -20,16 +20,21 @@
 <!-- These resources are around just to allow their values to be customized
      for different hardware and product builds. -->
 <resources>
-
-    <!-- Fade screen brightness. -->
-    <bool name="config_animateScreenLights">true</bool>
-
     <!--
      The 2d accelerator can't do an alpha transformation of
              a surface with an alpha channel, so enable this special mode
              to avoid going into software rendering. 
     -->
     <bool name="config_sf_limitedAlpha">true</bool>
+
+    <bool name="config_animateScreenLights">false</bool>
+
+    <!-- Flag indicating whether the surface flinger is inefficient
+        at performing a blur.  Used by parts of the UI to turn off
+        the blur effect where it isn't worth the performance hit. -->
+    <bool name="config_sf_slowBlur">true</bool>
+
+    <!--<bool name="config_hspa_data_distinguishable">true</bool>-->
 
     <!-- Flag indicating whether we should enable the automatic brightness in Settings.
          config_hardware_automatic_brightness_available is not set, so we will use software implementation -->
@@ -50,70 +55,48 @@
 
          Must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessLevels">
-    	<item>11</item>
-    	<item>41</item>
-    	<item>91</item>
-    	<item>161</item>
-    	<item>226</item>
-    	<item>321</item>
-    	<item>641</item>
-    	<item>1281</item>
-    	<item>2601</item>
+        <item>4</item>
+        <item>16</item>
+        <item>64</item>
+        <item>250</item>
     </integer-array>
 
 
     <!-- Array of output values for LCD backlight corresponding to the LUX values
          in the config_autoBrightnessLevels array.  This array should have size one greater
          than the size of the config_autoBrightnessLevels array.
-    -->
+         This must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessLcdBacklightValues">
-    	<item>8</item>
-    	<item>16</item>
-    	<item>34</item>
-    	<item>61</item>
-    	<item>96</item>
-    	<item>138</item>
-    	<item>167</item>
-    	<item>195</item>
-    	<item>227</item>
-    	<item>255</item>
+        <item>41</item>
+        <item>81</item>
+        <item>143</item>
+        <item>186</item>
+        <item>255</item>
     </integer-array>
-
 
     <!-- Array of output values for button backlight corresponding to the LUX values
          in the config_autoBrightnessLevels array.  This array should have size one greater
          than the size of the config_autoBrightnessLevels array.
-    -->
+         This must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessButtonBacklightValues">
-    	<item>255</item>
-    	<item>255</item>
-    	<item>255</item>
-    	<item>255</item>
-    	<item>0</item>
-    	<item>0</item>
-    	<item>0</item>
-    	<item>0</item>
-    	<item>0</item>
-    	<item>0</item>
+        <item>255</item>
+        <item>255</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
     </integer-array>
 
 
     <!-- Array of output values for keyboard backlight corresponding to the LUX values
          in the config_autoBrightnessLevels array.  This array should have size one greater
          than the size of the config_autoBrightnessLevels array.
-         Passion has no keyboard so all values are zero.
-    -->
+         This must be overridden in platform specific overlays -->
     <integer-array name="config_autoBrightnessKeyboardBacklightValues">
-    	<item>0</item>
-    	<item>0</item>
-    	<item>0</item>
-    	<item>0</item>
-    	<item>0</item>
-    	<item>0</item>
-    	<item>0</item>
-    	<item>0</item>
-    	<item>0</item>
-    	<item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
     </integer-array>
 
     <!-- Amount of time it takes for the light sensor to warm up in milliseconds.
@@ -127,6 +110,8 @@
     <!-- Component name of the service providing geocoder API support. -->
     <string name="config_geocodeProvider">com.google.android.location.GeocodeProvider</string>
 
+    <!-- Default blink frequency for notification LED is 9 seconds. -->
+    <integer name="config_defaultNotificationLedOff">9000</integer>
 
     <!-- XXXXX NOTE THE FOLLOWING RESOURCES USE THE WRONG NAMING CONVENTION.
          Please don't copy them, copy anything else. -->
@@ -149,7 +134,7 @@
          USB interfaces.  If the device doesn't want to support tething over USB this should
          be empty.  An example would be "usb.*" -->
     <string-array translatable="false" name="config_tether_usb_regexs">
-        <item>"usb0"</item>
+        <item>"usb\\d"</item>
     </string-array>
 
     <!-- Regex array of allowable upstream ifaces for tethering - for example if you want
@@ -159,11 +144,14 @@
         <item>"tiwlan\\d"</item>
     </string-array>
 
+    <!-- List of regexpressions describing the interface (if any) that represent tetherable
+         Wifi interfaces.  If the device doesn't want to support tethering over Wifi this
+         should be empty.  An example would be "softap.*" -->
+    <string-array translatable="false" name="config_tether_wifi_regexs">
+        <item>"tiap\\d"</item>
+    </string-array>
+
     <!-- Boolean indicating if we require the use of DUN on mobile for tethering -->
     <bool translatable="false" name="config_tether_dun_required">false</bool>
 
-    <!-- If this value is true, The mms content-disposition field is supported correctly.
-         If false, Content-disposition fragments are ignored -->
-    <bool name="config_mms_content_disposition_support">false</bool>
-    
 </resources>
